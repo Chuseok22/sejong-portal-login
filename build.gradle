@@ -1,16 +1,25 @@
 plugins {
-    id 'java'
+    id 'java-library'
     id 'org.springframework.boot' version '3.5.3'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'maven-publish'
 }
 
 group = 'com.chuseok22'
-version = '0.0.1-SNAPSHOT'
+version = project.findProperty('version') ?: '0.0.0-SNAPSHOT'
 
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
     }
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
 }
 
 configurations {
@@ -30,8 +39,46 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // Http
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+    implementation 'org.jsoup:jsoup:1.15.3'
+
+    // JavaNetCookieJar
+    implementation 'com.squareup.okhttp3:okhttp-urlconnection:4.9.3'
+    // HttpLoggingInterceptor
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            pom {
+                name = 'Chuseok22 Sejong Portal Login'
+                description = '세종대학교 로그인 API'
+                url = 'https://github.com/Chuseok22/sejong-portal-login'
+            }
+        }
+    }
+    repositories {
+        mavenLocal()
+        maven {
+            name = 'chuseok22Nexus'
+            url = uri(
+                    version.endsWith('SNAPSHOT')
+                            ? "https://nexus.chuseok22.com/repository/maven-snapshots/"
+                            : "https://nexus.chuseok22.com/repository/maven-releases/"
+            )
+            allowInsecureProtocol = true
+            credentials {
+                username = project.findProperty('nexusUsername')
+                password = project.findProperty('nexusPassword')
+            }
+        }
+    }
 }
