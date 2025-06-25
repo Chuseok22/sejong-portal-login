@@ -6,7 +6,7 @@
 - 세종대학교 포탈(@portal.sejong.ac.kr) 로그인 자동화
 - 고전독서 인증현황(@classic.sejong.ac.kr) 사용자 정보 크롤링
 - 학과명, 학번, 이름, 학년, 사용자 상태, 이수 학기 등 반환
-- OkHttp, jsoup 기반 (RestTemplate 미사용)
+- OkHttp, jsoup 기반
 - Nexus/Maven 저장소 배포 지원
 
 ---
@@ -79,33 +79,6 @@ curl -X POST \
 
 ---
 
-## 4. Nexus/Maven 배포 방법
-
-1. `build.gradle`에 publishing 설정 추가 (이미 적용됨)
-2. `gradle.properties`에 Nexus 계정 정보 추가
-   ```properties
-   nexusUsername=본인ID
-   nexusPassword=본인PW
-   ```
-3. 배포 명령어 실행
-   ```bash
-   ./gradlew publish
-   ```
-4. Nexus 웹에서 업로드 확인 후, 다른 프로젝트에서 의존성 추가
-
----
-
-## 5. 개발 및 실행 방법
-
-### 1) Spring Boot 실행
-```bash
-./gradlew bootRun
-```
-
-### 2) Java 17 이상 필요
-
----
-
-## 6. 참고/문의
+## 참고/문의
 - [GitHub 저장소](https://github.com/Chuseok22/sejong-portal-login)
 - 이슈/문의: PR 또는 Issue 등록
